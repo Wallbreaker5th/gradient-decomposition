@@ -54,17 +54,23 @@ export default {
 <template>
   <div class="single-layer">
     <el-card>
-      <h3>Layer {{ index }}</h3>
-      <pre>{{ css }}</pre>
-      <ColoredBox :css="css" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
-        :borderRadius="borderRadius" :background="background" :extraCss="extraCss" :exampleText="exampleText">
-      </ColoredBox>
+      <div style="flex-direction: row; display: flex; align-items: center;">
+        <div style="margin-right: 20px; width: 3em;">
+          <h3>层 {{ index }}</h3>
+        </div>
+        <div>
+          <pre>{{ css }}</pre>
+          <ColoredBox :css="css" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
+            :borderRadius="borderRadius" :background="background" :extraCss="extraCss" :exampleText="exampleText">
+          </ColoredBox>
+        </div>
+      </div>
     </el-card>
   </div>
 </template>
 <style scoped>
 .single-layer {
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
 }
 </style>

@@ -8,12 +8,16 @@
 
     <el-divider></el-divider>
 
+    <ReferencePicture></ReferencePicture>
+
+    <el-divider></el-divider>
+
     <LayersDisplay></LayersDisplay>
 
     <el-divider></el-divider>
 
     <p>
-      Powered by <a href="https://vuejs.org/">Vue.js</a> and <a href="https://element-plus.org/">Element Plus</a>.
+      Powered by <a href="https://vuejs.org/">Vue.js</a> + <a href="https://element-plus.org/">Element Plus</a> + <a href="https://github.com/lokesh/color-thief">Color Thief</a>.
 
       <br>
 
@@ -28,10 +32,12 @@
 
 <script>
 import LayersDisplay from './components/LayersDisplay.vue';
+import ReferencePicture from './components/ReferencePicture.vue';
 
 export default {
   components: {
-    LayersDisplay
+    LayersDisplay,
+    ReferencePicture,
   }
 }
 

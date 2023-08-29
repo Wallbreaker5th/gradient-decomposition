@@ -16,7 +16,6 @@ export default {
       bordercolor: "#000000",
       borderRadius: 10,
       background: "#eeeeee",
-      extraCss: "",
       exampleText: "演唱",
       index: 0,
     };
@@ -125,20 +124,28 @@ export default {
       <p>请在上方输入 CSS 代码</p>
     </div>
     <div v-else>
-      <el-card style="margin-bottom: 20px; margin-top: 20px">
-        <h3>总效果</h3>
-        <ColoredBox :css="css.split(';')[0]" :width="width" :height="height" :borderwidth="borderwidth"
-          :bordercolor="bordercolor" :borderRadius="borderRadius" :background="background" :extraCss="extraCss"
-          :exampleText="exampleText">
-        </ColoredBox>
+      <el-card style="margin-bottom: 15px; margin-top: 15px">
+        <div style="flex-direction: row; display: flex; align-items: center;">
+          <div style="margin-right: 20px; width: 3em;">
+            <h3>总</h3>
+          </div>
+          <ColoredBox :css="css.split(';')[0]" :width="width" :height="height" :borderwidth="borderwidth"
+            :bordercolor="bordercolor" :borderRadius="borderRadius" :background="background" :extraCss="extraCss"
+            :exampleText="exampleText">
+          </ColoredBox>
+        </div>
       </el-card>
       <SingleLayer v-for="layer in decomposedCss" :css="layer.css" :index="layer.index" :key="layer.index"
         :extraCss="extraCss" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
         :borderRadius="borderRadius" :background="background" :exampleText="exampleText">
       </SingleLayer>
-      <el-card v-if="extraCss.length > 0" style="margin-bottom: 20px; margin-top: 20px">
-        <h3>其他 CSS</h3>
-        <pre>{{ extraCss }}</pre>
+      <el-card v-if="extraCss.length > 0" style="margin-bottom: 15px; margin-top: 15px">
+        <div style="flex-direction: row; display: flex; align-items: center;">
+          <div style="margin-right: 20px; width: 3em;">
+            <h3>其他</h3>
+          </div>
+          <pre>{{ extraCss }}</pre>
+        </div>
       </el-card>
     </div>
   </div>
