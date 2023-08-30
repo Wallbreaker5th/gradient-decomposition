@@ -1,12 +1,15 @@
 <script>
 import { ElCard } from 'element-plus';
 import ColoredBox from './ColoredBox.vue';
+import LayerCard from './LayerCard.vue';
 
 export default {
   components: {
     ElCard,
-    ColoredBox
-  },
+    ColoredBox,
+    LayerCard,
+    LayerCard
+},
   props: {
     css: {
       type: String,
@@ -52,25 +55,12 @@ export default {
 }
 </script>
 <template>
-  <div class="single-layer">
-    <el-card>
-      <div style="flex-direction: row; display: flex; align-items: center;">
-        <div style="margin-right: 20px; width: 3em;">
-          <h3>层 {{ index }}</h3>
-        </div>
-        <div>
-          <pre>{{ css }}</pre>
-          <ColoredBox :css="css" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
-            :borderRadius="borderRadius" :background="background" :extraCss="extraCss" :exampleText="exampleText">
-          </ColoredBox>
-        </div>
-      </div>
-    </el-card>
+  <div>
+    <LayerCard :title="`层 ${index}`">
+      <pre style="break-word: break-all; white-space: pre-wrap;">{{css}}</pre>
+      <ColoredBox :css="css" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
+        :borderRadius="borderRadius" :background="background" :extraCss="extraCss" :exampleText="exampleText">
+      </ColoredBox>
+    </LayerCard>
   </div>
 </template>
-<style scoped>
-.single-layer {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-</style>

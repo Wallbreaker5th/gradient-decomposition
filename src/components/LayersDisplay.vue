@@ -1,11 +1,13 @@
 <script>
 import SingleLayer from './SingleLayer.vue';
 import ColoredBox from './ColoredBox.vue';
+import LayerCard from './LayerCard.vue';
 
 export default {
   components: {
     SingleLayer,
-    ColoredBox
+    ColoredBox,
+    LayerCard,
   },
   data() {
     return {
@@ -118,35 +120,23 @@ export default {
 
     <el-divider></el-divider>
 
-    <!-- A list of SingleLayer -->
-    <!-- If no Layers are present, display a message -->
     <div v-if="decomposedCss.length == 0">
       <p>请在上方输入 CSS 代码</p>
     </div>
     <div v-else>
-      <el-card style="margin-bottom: 15px; margin-top: 15px">
-        <div style="flex-direction: row; display: flex; align-items: center;">
-          <div style="margin-right: 20px; width: 3em;">
-            <h3>总</h3>
-          </div>
-          <ColoredBox :css="css.split(';')[0]" :width="width" :height="height" :borderwidth="borderwidth"
-            :bordercolor="bordercolor" :borderRadius="borderRadius" :background="background" :extraCss="extraCss"
-            :exampleText="exampleText">
-          </ColoredBox>
-        </div>
-      </el-card>
-      <SingleLayer v-for="layer in decomposedCss" :css="layer.css" :index="layer.index" :key="layer.index"
-        :extraCss="extraCss" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
-        :borderRadius="borderRadius" :background="background" :exampleText="exampleText">
+      <LayerCard title="总">
+        <ColoredBox :css="css.split(';')[0]" :width="width" :height="height" :borderwidth="borderwidth"
+          :bordercolor="bordercolor" :borderRadius="borderRadius" :background="background" :extraCss="extraCss"
+          :exampleText="exampleText">
+        </ColoredBox>
+      </LayerCard>
+      <SingleLayer v-for="layer in decomposedCss" :css="layer.css" :index="layer.index"
+        :key="layer.index" :extraCss="extraCss" :width="width" :height="height" :borderwidth="borderwidth"
+        :bordercolor="bordercolor" :borderRadius="borderRadius" :background="background" :exampleText="exampleText">
       </SingleLayer>
-      <el-card v-if="extraCss.length > 0" style="margin-bottom: 15px; margin-top: 15px">
-        <div style="flex-direction: row; display: flex; align-items: center;">
-          <div style="margin-right: 20px; width: 3em;">
-            <h3>其他</h3>
-          </div>
-          <pre>{{ extraCss }}</pre>
-        </div>
-      </el-card>
+      <LayerCard title="其他">
+        <pre style="break-word: break-all; white-space: pre-wrap;">{{ extraCss }}</pre>
+      </LayerCard>
     </div>
   </div>
 </template>

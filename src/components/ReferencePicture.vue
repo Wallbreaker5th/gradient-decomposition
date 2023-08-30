@@ -47,9 +47,10 @@ export default {
       <div style="width:60%">
         <img :src="imageData" style="max-width: 100%; max-height: 400px;" />
       </div>
-      <div style="margin: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: center;">
-        <el-button type="danger" @click="uploaded = false; palette = []" style="margin: 10px;width:6em">清除图片</el-button>
-        <el-button type="primary" @click="getColorPalette" style="margin: 10px;width:6em">提取色卡</el-button>
+      <div
+        style="margin: 20px; display: flex; flex-direction: column; justify-content: space-between; align-items: center;">
+        <el-button type="danger" @click="uploaded = false; palette = []" class="button">清除图片</el-button>
+        <el-button type="primary" @click="getColorPalette" class="button">提取色卡</el-button>
       </div>
       <table style="margin: 20px;">
         <tr v-for="color in palette" style="width: 6em; text-align: center;">
@@ -80,3 +81,9 @@ export default {
     </el-upload>
   </div>
 </template>
+<style scoped>
+.button {
+  margin: 10px;
+  width: 6em;
+}
+</style>
