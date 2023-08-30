@@ -20,6 +20,7 @@ export default {
       background: "#eeeeee",
       exampleText: "演唱",
       index: 0,
+      isDisplayed: []
     };
   },
   methods: {
@@ -59,6 +60,28 @@ export default {
 
       return result;
     },
+    onInputUpdated() {
+      let old_length = this.isDisplayed.length;
+      let new_length = this.decompose(this.css).length;
+      while (old_length < new_length) {
+        this.isDisplayed.push(true);
+        old_length++;
+      }
+      while (old_length > new_length) {
+        this.isDisplayed.pop();
+        old_length--;
+      }
+    },
+    displayAll() {
+      for (let i = 0; i < this.isDisplayed.length; i++) {
+        this.isDisplayed[i] = true;
+      }
+    },
+    hideAll() {
+      for (let i = 0; i < this.isDisplayed.length; i++) {
+        this.isDisplayed[i] = false;
+      }
+    }
   },
   computed: {
     decomposedCss() {
@@ -75,7 +98,25 @@ export default {
       // all after the first `;`
       // trim the leading and trailing spaces of each part
       return this.css.split(';').slice(1).map(x => x.trim()).join(';\n');
-    }
+    },
+    combinedCss() {
+      let decomposed = this.decompose(this.css);
+      let result = [];
+      for (let i = 0; i < decomposed.length; i++) {
+        if (this.isDisplayed[i]) {
+          result.push(decomposed[i]);
+        }
+      }
+      if (result.length == 0) {
+        result = "transparent";
+      } else {
+        result = result.join(',\n');
+      }
+      return result;
+    },
+  },
+  mounted() {
+    this.onInputUpdated();
   }
 }
 
@@ -87,7 +128,8 @@ export default {
     <p>在此输入渐变色的 CSS 代码</p>
 
     <pre>background: </pre>
-    <el-input v-model="css" type="textarea" placeholder="CSS 代码" style="font-family: monospace"></el-input>
+    <el-input v-model="css" type="textarea" placeholder="CSS 代码" style="font-family: monospace"
+      @input="onInputUpdated()"></el-input>
 
     <el-collapse>
       <el-collapse-item title="更多设置">
@@ -125,14 +167,21 @@ export default {
     </div>
     <div v-else>
       <LayerCard title="总">
-        <ColoredBox :css="css.split(';')[0]" :width="width" :height="height" :borderwidth="borderwidth"
-          :bordercolor="bordercolor" :borderRadius="borderRadius" :background="background" :extraCss="extraCss"
-          :exampleText="exampleText">
-        </ColoredBox>
+        <div style="display:flex; flex-direction: row; align-items: center; justify-content: space-between;">
+          <ColoredBox :css="combinedCss" :width="width" :height="height" :borderwidth="borderwidth"
+            :bordercolor="bordercolor" :borderRadius="borderRadius" :background="background" :extraCss="extraCss"
+            :exampleText="exampleText">
+          </ColoredBox>
+          <div style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <el-button type="primary" @click="displayAll()" style="margin: 5px 5px;" size="small">全部显示</el-button>
+            <el-button type="primary" @click="hideAll()" style="margin: 5px 5px;" size="small">全部隐藏</el-button>
+          </div>
+        </div>
       </LayerCard>
-      <SingleLayer v-for="layer in decomposedCss" :css="layer.css" :index="layer.index"
-        :key="layer.index" :extraCss="extraCss" :width="width" :height="height" :borderwidth="borderwidth"
-        :bordercolor="bordercolor" :borderRadius="borderRadius" :background="background" :exampleText="exampleText">
+      <SingleLayer v-for="layer in decomposedCss" :css="layer.css" :index="layer.index" :key="layer.index"
+        :extraCss="extraCss" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
+        :borderRadius="borderRadius" :background="background" :exampleText="exampleText">
+        <el-switch v-model="isDisplayed[layer.index - 1]" active-text="显示" inactive-text="隐藏" inline-prompt></el-switch>
       </SingleLayer>
       <LayerCard title="其他">
         <pre style="break-word: break-all; white-space: pre-wrap;">{{ extraCss }}</pre>

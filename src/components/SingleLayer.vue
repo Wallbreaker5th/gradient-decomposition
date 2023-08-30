@@ -57,10 +57,17 @@ export default {
 <template>
   <div>
     <LayerCard :title="`层 ${index}`">
-      <pre style="break-word: break-all; white-space: pre-wrap;">{{css}}</pre>
-      <ColoredBox :css="css" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
-        :borderRadius="borderRadius" :background="background" :extraCss="extraCss" :exampleText="exampleText">
-      </ColoredBox>
+      <div style="display:flex; flex-direction: row; align-items: center; justify-content: space-between;">
+        <div>
+          <pre style="break-word: break-all; white-space: pre-wrap;">{{css}}</pre>
+          <ColoredBox :css="css" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
+            :borderRadius="borderRadius" :background="background" :extraCss="extraCss" :exampleText="exampleText">
+          </ColoredBox>
+        </div>
+        <div>
+          <slot></slot>
+        </div>
+      </div>
     </LayerCard>
   </div>
 </template>

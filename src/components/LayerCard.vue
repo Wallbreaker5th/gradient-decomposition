@@ -15,7 +15,7 @@ export default {
         <h3>{{title}}</h3>
       </div>
       <!-- slot -->
-      <div>
+      <div style="flex-grow: 1;">
         <slot></slot>
       </div>
     </div>
