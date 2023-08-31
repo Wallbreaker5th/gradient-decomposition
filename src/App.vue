@@ -8,11 +8,11 @@
 
     <el-divider></el-divider>
 
-    <ReferencePicture></ReferencePicture>
+    <ReferencePicture @update:palette="updatePalette"></ReferencePicture>
 
     <el-divider></el-divider>
 
-    <LayersDisplay></LayersDisplay>
+    <LayersDisplay :palette="palette"></LayersDisplay>
 
     <el-divider></el-divider>
 
@@ -38,7 +38,17 @@ export default {
   components: {
     LayersDisplay,
     ReferencePicture,
-  }
+  },
+  data() {
+    return {
+      palette: [],
+    };
+  },
+  methods: {
+    updatePalette(value) {
+      this.palette = value;
+    },
+  },
 }
 
 </script>

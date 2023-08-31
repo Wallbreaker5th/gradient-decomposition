@@ -11,6 +11,11 @@ export default {
     LayerCard,
     CssInput,
   },
+  props: {
+    palette: {
+      default: () => ref([]),
+    }
+  },
   data() {
     return {
       // css: "radial-gradient(at 50% 50%,rgba(0,0,0,0) 40%,rgba(0,0,0,0.4)),linear-gradient(to right,transparent 45%,#000 45%,#000 55%,transparent 55%),linear-gradient(to right top, #fcff75 50%, #8af4ff calc(50% + 1px));color:#FFF",
@@ -101,7 +106,7 @@ export default {
   <div>
     <p>在此输入渐变色的 CSS 代码</p>
 
-    <CssInput v-model="css" @input="onInputUpdated()"></CssInput>
+    <CssInput v-model="css" @input="onInputUpdated()" :palette="palette"></CssInput>
 
     <el-collapse>
       <el-collapse-item title="更多设置">

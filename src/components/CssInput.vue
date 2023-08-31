@@ -1,9 +1,44 @@
 <script>
+import { ref } from 'vue';
+import { rgb2hex, rgb2rgba } from '../utils/rgb';
+
 export default {
-  props: ['modelValue'],
+  props: {
+    modelValue: {},
+    palette: {
+      default: () => ref([]),
+    }
+  },
   data() {
     return {
       code: '',
+      gradientTypes: [
+        {
+          type: 'linear-gradient',
+          name: '线性渐变',
+          example: 'linear-gradient(to right, #000 0%, #fff 100%)',
+        },
+        {
+          type: 'radial-gradient',
+          name: '径向渐变',
+          example: 'radial-gradient(at 50% 50%, #000 0%, #fff 100%)',
+        },
+        {
+          type: 'repeating-linear-gradient',
+          name: '重复线性渐变',
+          example: 'repeating-linear-gradient(to right, #000 0px, #fff 5px, #000 10px)',
+        },
+        {
+          type: 'repeating-radial-gradient',
+          name: '重复径向渐变',
+          example: 'repeating-radial-gradient(at 50% 50%, #000 0px, #fff 5px, #000 10px)',
+        },
+        {
+          type: 'conic-gradient',
+          name: '锥形渐变',
+          example: 'conic-gradient(from 0deg, #000 0%, #fff 100%)',
+        }
+      ]
     }
   },
   emits: ['update:modelValue'],
@@ -12,7 +47,7 @@ export default {
       // css is a string
 
       // preserve the content before the first `;`
-      background = css.split(';')[0];
+      let background = css.split(';')[0];
 
       // separate the background into an array of strings
       // separated by the outermost `,`
@@ -52,7 +87,28 @@ export default {
     },
     resetCode() {
       this.code = this.combine(this.modelValue);
-    }
+    },
+    insertCode(c) {
+      let input = document.getElementById('input');
+      let cursorLeft = input.selectionStart;
+      let cursorRight = input.selectionEnd;
+      let left = this.code.substring(0, cursorLeft);
+      let middle = this.code.substring(cursorLeft, cursorRight);
+      let right = this.code.substring(cursorRight, this.code.length);
+      // if c is a string, replace the selected text with c
+      // if c is an array of length 2, replace the selected text with c[0] + selected text + c[1]
+      if (typeof c == 'string') {
+        input.value = left + c + right;
+        input.selectionStart = cursorLeft + c.length;
+        input.selectionEnd = cursorLeft + c.length;
+      } else if (c.length == 2) {
+        input.value = left + c[0] + middle + c[1] + right;
+        input.selectionStart = cursorLeft + c[0].length;
+        input.selectionEnd = cursorLeft + c[0].length + middle.length;
+      }
+      this.value = input.value;
+      input.focus();
+    },
   },
   computed: {
     decomposedCss() {
@@ -66,7 +122,36 @@ export default {
         this.code = value;
         this.$emit('update:modelValue', this.decompose(value));
       }
-    }
+    },
+    colors() {
+      let res = [
+        {
+          code: "transparent",
+          color: 'rgba(255, 255, 255, 0)'
+        },
+        {
+          code: "white",
+          color: '#ffffff'
+        },
+        {
+          code: "black",
+          color: '#000000'
+        },
+      ];
+      for (let i = 0; i < this.palette.length; i++) {
+        res.push({
+          code: rgb2hex(this.palette[i]),
+          color: rgb2hex(this.palette[i])
+        });
+      }
+      for (let i = 0; i < this.palette.length; i++) {
+        res.push({
+          code: rgb2rgba(this.palette[i], 0.5),
+          color: rgb2rgba(this.palette[i], 0.5)
+        });
+      }
+      return res;
+    },
   },
   mounted() {
     this.resetCode();
@@ -78,11 +163,31 @@ export default {
   <div class="css-input">
     <div style="flex-grow: 1">
       <pre>background: </pre>
-      <el-input v-model="value" type="textarea" style="font-family: monospace"
-        autosize="{ minRows: 3, maxRows: 20 }"></el-input>
+      <el-input v-model="value" type="textarea" style="font-family: monospace" :autosize="{ minRows: 3, maxRows: 20 }"
+        id="input"></el-input>
     </div>
-    <div class="tools">
+    <div class="tools" style="display: flex; flex-direction: column; justify-content: flex-start;">
       <el-button type="danger" @click="resetCode" size="small">整理代码</el-button>
+      <el-collapse style="width: 140px;">
+        <el-collapse-item title="插入颜色">
+          <!-- <el-color-picker @click="insertCode('transparent')" v-model="transparent" show-alpha
+            size="small"></el-color-picker> -->
+          <div>
+            <div v-for="color in colors" style="display: inline-block;">
+              <el-button @click="insertCode(color.code)" size="small"
+                :style="{ background: `linear-gradient(${color.color}, ${color.color}), linear-gradient(45deg, #ddd 25%, white 25%, white 50%, #ddd 50%, #ddd 75%, white 75%)` }"></el-button>
+            </div>
+          </div>
+        </el-collapse-item>
+        <el-collapse-item title="插入渐变">
+          <div>
+            <div v-for="gradient in gradientTypes" style="display: inline-block;">
+              <el-button @click="insertCode([gradient.type + '(', ')'])" size="small" :title="gradient.name"
+                :style="{ background: gradient.example }"></el-button>
+            </div>
+          </div>
+        </el-collapse-item>
+      </el-collapse>
     </div>
   </div>
 </template>

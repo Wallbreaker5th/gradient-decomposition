@@ -1,7 +1,7 @@
 <script>
 import { UploadFilled } from '@element-plus/icons-vue'
 import ColorThief from 'colorthief'
-import $ from 'jquery'
+import { rgb2hex, rgb2rgba } from '../utils/rgb';
 
 export default {
   components: {
@@ -11,8 +11,21 @@ export default {
     return {
       uploaded: false,
       imageData: '',
-      palette: [],
+      paletteData: [],
+      rgb2hex: rgb2hex,
+      rgb2rgba: rgb2rgba,
     };
+  },
+  computed: {
+    palette: {
+      get() {
+        return this.paletteData;
+      },
+      set(value) {
+        this.paletteData = value;
+        this.$emit('update:palette', value);
+      },
+    },
   },
   methods: {
     handleUpload(file) {
@@ -28,12 +41,6 @@ export default {
       const img = new Image();
       img.src = this.imageData;
       this.palette = colorThief.getPalette(img, 8);
-    },
-    rgb2hex(rgb) {
-      return '#' + rgb.map(x => {
-        const hex = x.toString(16);
-        return hex.length === 1 ? '0' + hex : hex;
-      }).join('');
     },
     copyToClipboard(text) {
       navigator.clipboard.writeText(text);
@@ -67,8 +74,8 @@ export default {
               }}</el-button>
             </td>
             <td style="width: 11em;">
-              <el-button text @click="copyToClipboard(`rgba(${color[0]},${color[1]},${color[2]},100)`)"
-                style="width: 11em;">{{ `rgba(${color[0]},${color[1]},${color[2]},100)`
+              <el-button text @click="copyToClipboard(rgb2rgba(color,1.0))"
+                style="width: 11em;">{{ rgb2rgba(color,1.0)
                 }}</el-button>
             </td>
           </tr>
