@@ -1,6 +1,7 @@
 <script>
 import { ref } from 'vue';
 import { rgb2hex, rgb2rgba } from '../utils/rgb';
+import rgba from 'color-rgba'
 
 export default {
   props: {
@@ -109,6 +110,22 @@ export default {
       this.value = input.value;
       input.focus();
     },
+    replaceColorWithRGBA() {
+      let input = document.getElementById('input');
+      let cursorLeft = input.selectionStart;
+      let cursorRight = input.selectionEnd;
+      let left = this.code.substring(0, cursorLeft);
+      let middle = this.code.substring(cursorLeft, cursorRight);
+      let right = this.code.substring(cursorRight, this.code.length);
+      let color = rgba(middle);
+      if (color.length == 4) {
+        input.value = left + rgb2rgba(color.slice(0, 3), color[3]) + right;
+        input.selectionStart = cursorLeft;
+        input.selectionEnd = cursorLeft + rgb2rgba(color.slice(0, 3), color[3]).length;
+      }
+      this.value = input.value;
+      input.focus();
+    }
   },
   computed: {
     decomposedCss() {
@@ -162,6 +179,7 @@ export default {
 <template>
   <div class="css-input">
     <div style="flex-grow: 1">
+      <p>在此输入渐变色的 CSS 代码</p>
       <pre>background: </pre>
       <el-input v-model="value" type="textarea" style="font-family: monospace" :autosize="{ minRows: 3, maxRows: 20 }"
         id="input"></el-input>
@@ -185,6 +203,12 @@ export default {
               <el-button @click="insertCode([gradient.type + '(', ')'])" size="small" :title="gradient.name"
                 :style="{ background: gradient.example }"></el-button>
             </div>
+          </div>
+        </el-collapse-item>
+        <el-collapse-item title="其他工具">
+          <div>
+            <el-button @click="replaceColorWithRGBA" size="small" title="将选中颜色变为 RGBA">RGBA</el-button>
+            <el-button @click="insertCode(['calc(', ' + 1px)'])" size="small" title="将选中位置后移一像素">抗锯齿</el-button>
           </div>
         </el-collapse-item>
       </el-collapse>

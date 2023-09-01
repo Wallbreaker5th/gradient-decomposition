@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "color-rgba": "^2.4.0",
     "colorthief": "^2.4.0",
     "element-plus": "^2.3.12",
     "jquery": "^3.7.1",

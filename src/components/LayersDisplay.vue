@@ -104,8 +104,6 @@ export default {
 <template>
   <!-- A input box -->
   <div>
-    <p>在此输入渐变色的 CSS 代码</p>
-
     <CssInput v-model="css" @input="onInputUpdated()" :palette="palette"></CssInput>
 
     <el-collapse>
