@@ -1,9 +1,13 @@
 <script>
 import { ref } from 'vue';
 import { rgb2hex, rgb2rgba } from '../utils/rgb';
-import rgba from 'color-rgba'
+import rgba from 'color-rgba';
+import CheatSheet from './CheatSheet.vue';
 
 export default {
+  components: {
+    CheatSheet,
+  },
   props: {
     modelValue: {},
     palette: {
@@ -183,6 +187,11 @@ export default {
       <pre>background: </pre>
       <el-input v-model="value" type="textarea" style="font-family: monospace" :autosize="{ minRows: 3, maxRows: 20 }"
         id="input"></el-input>
+      <el-collapse>
+          <el-collapse-item title="CheatSheet" style="width: 800px;">
+            <CheatSheet @click:insert-code="insertCode"></CheatSheet>
+          </el-collapse-item>
+      </el-collapse>
     </div>
     <div class="tools" style="display: flex; flex-direction: column; justify-content: flex-start;">
       <el-button type="danger" @click="resetCode" size="small">整理代码</el-button>
