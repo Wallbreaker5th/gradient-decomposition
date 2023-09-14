@@ -29,6 +29,11 @@ export default {
           example: 'radial-gradient(at 50% 50%, #000 0%, #fff 100%)',
         },
         {
+          type: 'conic-gradient',
+          name: '锥形渐变',
+          example: 'conic-gradient(from 0deg, #000 0%, #fff 100%)',
+        },
+        {
           type: 'repeating-linear-gradient',
           name: '重复线性渐变',
           example: 'repeating-linear-gradient(to right, #000 0px, #fff 5px, #000 10px)',
@@ -39,9 +44,9 @@ export default {
           example: 'repeating-radial-gradient(at 50% 50%, #000 0px, #fff 5px, #000 10px)',
         },
         {
-          type: 'conic-gradient',
-          name: '锥形渐变',
-          example: 'conic-gradient(from 0deg, #000 0%, #fff 100%)',
+          type: 'repeating-conic-gradient',
+          name: '重复锥形渐变',
+          example: 'repeating-conic-gradient(from 0deg, #000 0%, #fff 10%, #000 20%)',
         }
       ]
     }
@@ -216,8 +221,10 @@ export default {
         </el-collapse-item>
         <el-collapse-item title="其他工具">
           <div>
-            <el-button @click="replaceColorWithRGBA" size="small" title="将选中颜色变为 RGBA">RGBA</el-button>
-            <el-button @click="insertCode(['calc(', ' + 1px)'])" size="small" title="将选中位置后移一像素">抗锯齿</el-button>
+            <el-button @click="replaceColorWithRGBA" size="small" title="将选中颜色变为 RGBA" style="width:5em">RGBA</el-button>
+            <br/>
+            <el-button @click="insertCode(['calc(', ' - 1px)'])" size="small" title="将选中位置前移一像素" style="width:5em">抗锯齿-</el-button>
+            <el-button @click="insertCode(['calc(', ' + 1px)'])" size="small" title="将选中位置后移一像素" style="width:5em">抗锯齿+</el-button>
           </div>
         </el-collapse-item>
       </el-collapse>
