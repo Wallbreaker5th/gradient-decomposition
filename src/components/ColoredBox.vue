@@ -66,7 +66,9 @@ export default {
       <table align="center">
         <tr>
           <td :style="[frontStyle, extraCss]" class="front">
-            <b>{{ exampleText }}</b>
+            <span style="display:inline-block;">
+              <b>{{ exampleText }}</b>
+            </span>
           </td>
         </tr>
       </table>
@@ -83,7 +85,7 @@ export default {
 }
 
 .front {
-  font-size: 85%;
+  font-size: 12px;
   padding: 2px;
   border: 2px;
   border-style: solid;
@@ -93,9 +95,8 @@ export default {
 }
 
 table {
-  font-size: 89%;
   text-align: center;
-  line-height: 1.3em;
+  line-height: 1.08em;
   width: 100%;
   max-width: 450px;
 }
