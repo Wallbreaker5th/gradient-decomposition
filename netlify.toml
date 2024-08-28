@@ -1,0 +1,5 @@
+[[redirects]]
+  force = true
+  from = "/api/*"
+  to = "https://api.bilibili.com/:splat"
+  status = 200

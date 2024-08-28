@@ -142,8 +142,8 @@ export default {
         // Fetch video info
         const response = await fetch(`/api/x/web-interface/view?${parsedAvbv.startsWith('BV') ? 'bvid' : 'aid'}=${parsedAvbv}`, {
           headers: {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-          }
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+          },
         });
         const data = await response.json();
 
@@ -153,8 +153,7 @@ export default {
         }
 
         const coverUrl = data.data.pic;
-        const coverUrlProxy = coverUrl.replace(/^https?:\/\i(\d)\.hdslb\.com/, '/i$1hdslb')
-        const imageResponse = await fetch(coverUrlProxy, {
+        const imageResponse = await fetch(coverUrl, {
           headers: {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0',
           },
