@@ -12,7 +12,25 @@
 
     <el-divider></el-divider>
 
-    <LayersDisplay :palette="palette"></LayersDisplay>
+    <el-checkbox v-model="triple">三套配色</el-checkbox>
+
+    <div :style="{ display: triple ? 'block' : 'none' }">
+      <TripleBox :palette="palette" :css="css"></TripleBox>
+      <el-tabs>
+        <el-tab-pane label="上">
+          <LayersDisplay :palette="palette" @update:css="css[0] = $event"></LayersDisplay>
+        </el-tab-pane>
+        <el-tab-pane label="中">
+          <LayersDisplay :palette="palette" @update:css="css[1] = $event"></LayersDisplay>
+        </el-tab-pane>
+        <el-tab-pane label="下">
+          <LayersDisplay :palette="palette" @update:css="css[2] = $event"></LayersDisplay>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
+    <div :style="{ display: triple ? 'none' : 'block' }">
+      <LayersDisplay :palette="palette" @update:css="css[0] = $event"></LayersDisplay>
+    </div>
 
     <el-divider></el-divider>
 
@@ -33,15 +51,19 @@
 <script>
 import LayersDisplay from './components/LayersDisplay.vue';
 import ReferencePicture from './components/ReferencePicture.vue';
+import TripleBox from './components/TripleBox.vue';
 
 export default {
   components: {
     LayersDisplay,
     ReferencePicture,
+    TripleBox,
   },
   data() {
     return {
       palette: [],
+      triple: false,
+      css: ['', '', ''],
     };
   },
   methods: {

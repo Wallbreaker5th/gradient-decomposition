@@ -50,6 +50,7 @@ export default {
         this.isDisplayed.pop();
         old_length--;
       }
+      this.updateCss();
     },
     displayAll() {
       for (let i = 0; i < this.isDisplayed.length; i++) {
@@ -60,6 +61,9 @@ export default {
       for (let i = 0; i < this.isDisplayed.length; i++) {
         this.isDisplayed[i] = false;
       }
+    },
+    updateCss() {
+      this.$emit('update:css', this.combinedBackground + ';' + this.css.extra);
     }
   },
   computed: {
@@ -96,6 +100,13 @@ export default {
   },
   mounted() {
     this.onInputUpdated();
+    this.updateCss();
+  },
+  emits: ['update:css'],
+  watch: {
+    combinedBackground(newVal) {
+      this.updateCss(newVal + ';' + this.css.extra);
+    }
   }
 }
 

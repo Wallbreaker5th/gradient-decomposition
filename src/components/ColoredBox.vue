@@ -62,7 +62,7 @@ export default {
 
 <template>
   <div>
-    <div :style="backStyle" class="back">
+    <div :style="backStyle" style="font-size: 14px;" class="back">
       <table align="center">
         <tr>
           <td :style="[frontStyle, extraCss]" class="front">
@@ -95,10 +95,15 @@ export default {
 }
 
 table {
+  font-size: 89%;
   text-align: center;
-  line-height: 1.08em;
-  width: 100%;
+  line-height: 1.3em;
+  margin: auto;
+  border-collapse: separate !important;
+  display: table;
+  width: 100% !important;
   max-width: 450px;
+  border-spacing: 2px;
 }
 
 b{
