@@ -17,6 +17,7 @@ export default {
       rgb2rgba: rgb2rgba,
       hoverColorSmall: [0, 0, 0],
       hoverColorLarge: [0, 0, 0],
+      avbvId: '',
     };
   },
   computed: {
@@ -129,6 +130,63 @@ export default {
         this.addColor(this.hoverColorLarge);
       }
     },
+    async fetchImageFromAvbv() {
+      try {
+        const avbv = this.avbvId.trim();
+        if (!avbv) {
+          this.$message.error('请输入正确的 AV 号或 BV 号');
+          return;
+        }
+        const parsedAvbv = avbv.toLowerCase().startsWith('av') ? avbv.slice(2) : avbv;
+
+        // Fetch video info
+        const response = await fetch(`/api/x/web-interface/view?${parsedAvbv.startsWith('BV') ? 'bvid' : 'aid'}=${parsedAvbv}`, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+          }
+        });
+        const data = await response.json();
+
+        if (data.code !== 0) {
+          this.$message.error('获取视频信息失败：' + data.message);
+          return;
+        }
+
+        const coverUrl = data.data.pic;
+        const coverUrlProxy = coverUrl.replace(/^https?:\/\i(\d)\.hdslb\.com/, '/i$1hdslb')
+        const imageResponse = await fetch(coverUrlProxy, {
+          headers: {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0',
+          },
+          referrer: "",
+          origin: "",
+        });
+
+        if (!imageResponse.ok) {
+          console.log(imageResponse)
+          throw new Error(`HTTP error! status: ${imageResponse.status}`);
+        }
+
+        const blob = await imageResponse.blob();
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          this.imageData = e.target.result;
+          this.uploaded = true;
+        };
+        reader.readAsDataURL(blob);
+      } catch (error) {
+        console.error('Error fetching image:', error);
+        this.$message.error('获取封面图片失败');
+      }
+    },
+    downloadImage() {
+      const link = document.createElement('a');
+      link.href = this.imageData;
+      link.download = '封面.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    },
   },
 }
 </script>
@@ -152,6 +210,7 @@ export default {
             :style="{ backgroundColor: `rgb(${hoverColorLarge[0]}, ${hoverColorLarge[1]}, ${hoverColorLarge[2]})`, width: '50%', height: '100%' }">
           </div>
         </div>
+        <el-button type="success" @click="downloadImage" class="button">下载图片</el-button>
         <el-button type="danger" @click="uploaded = false; palette = []" class="button">清除图片</el-button>
         <el-button type="primary" @click="getColorPalette" class="button">提取色卡</el-button>
       </div>
@@ -185,17 +244,25 @@ export default {
         </table>
       </div>
     </div>
-    <el-upload class="upload-demo" drag :show-file-list="false" :auto-upload="false" :on-change="handleUpload" v-else>
-      <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-      <div class="el-upload__text">
-        将要用作参考的图片拖动至此或 <em>点击上传</em>
-      </div>
-      <template #tip>
-        <div class="el-upload__tip">
-          jpg/png 文件
+    <div v-else>
+      <el-upload class="upload-demo" drag :show-file-list="false" :auto-upload="false" :on-change="handleUpload">
+        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+        <div class="el-upload__text">
+          将要用作参考的图片拖动至此或 <em>点击上传</em>
         </div>
-      </template>
-    </el-upload>
+        <template #tip>
+          <div class="el-upload__tip">
+            jpg/png 文件
+          </div>
+        </template>
+      </el-upload>
+      <div style="display: flex; flex-direction: row; align-items: center; justify-content: left; margin-top: 10px;">
+        <el-input v-model="avbvId" placeholder="BV1z64y1b7H4" style="width: 300px; margin-right: 10px;">
+          <template #prepend>或输入 AV/BV 号</template>
+        </el-input>
+        <el-button type="primary" @click="fetchImageFromAvbv" size="small">获取封面</el-button>
+      </div>
+    </div>
   </div>
 </template>
 <style scoped>
