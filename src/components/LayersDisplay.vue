@@ -168,7 +168,7 @@ export default {
         <el-switch v-model="isDisplayed[layer.index - 1]" active-text="显示" inactive-text="隐藏" inline-prompt></el-switch>
       </SingleLayer>
       <LayerCard title="其他">
-        <pre style="break-word: break-all; white-space: pre-wrap;">{{ extraCss }}</pre>
+        <pre style="white-space: pre-wrap;">{{ extraCss }}</pre>
       </LayerCard>
     </div>
   </div>

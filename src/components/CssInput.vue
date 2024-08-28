@@ -190,12 +190,12 @@ export default {
     <div style="flex-grow: 1">
       <p>在此输入渐变色的 CSS 代码</p>
       <pre>background: </pre>
-      <el-input v-model="value" type="textarea" style="font-family: monospace" :autosize="{ minRows: 3, maxRows: 20 }"
+      <el-input v-model="value" type="textarea" style="font-family: monospace; width: 800px;" :autosize="{ minRows: 3, maxRows: 20 }"
         id="input"></el-input>
       <el-collapse>
-          <el-collapse-item title="CheatSheet" style="width: 800px;">
-            <CheatSheet @click:insert-code="insertCode"></CheatSheet>
-          </el-collapse-item>
+        <el-collapse-item title="CheatSheet" style="width: 800px;">
+          <CheatSheet @click:insert-code="insertCode"></CheatSheet>
+        </el-collapse-item>
       </el-collapse>
     </div>
     <div class="tools" style="display: flex; flex-direction: column; justify-content: flex-start;">
@@ -221,10 +221,13 @@ export default {
         </el-collapse-item>
         <el-collapse-item title="其他工具">
           <div>
-            <el-button @click="replaceColorWithRGBA" size="small" title="将选中颜色变为 RGBA" style="width:5em">RGBA</el-button>
-            <br/>
-            <el-button @click="insertCode(['calc(', ' - 1px)'])" size="small" title="将选中位置前移一像素" style="width:5em">抗锯齿-</el-button>
-            <el-button @click="insertCode(['calc(', ' + 1px)'])" size="small" title="将选中位置后移一像素" style="width:5em">抗锯齿+</el-button>
+            <el-button @click="replaceColorWithRGBA" size="small" title="将选中颜色变为 RGBA"
+              style="width:5em">RGBA</el-button>
+            <br />
+            <el-button @click="insertCode(['calc(', ' - 1px)'])" size="small" title="将选中位置前移一像素"
+              style="width:5em">抗锯齿-</el-button>
+            <el-button @click="insertCode(['calc(', ' + 1px)'])" size="small" title="将选中位置后移一像素"
+              style="width:5em">抗锯齿+</el-button>
           </div>
         </el-collapse-item>
       </el-collapse>

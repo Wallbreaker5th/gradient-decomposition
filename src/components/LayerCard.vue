@@ -25,6 +25,7 @@ export default {
 .single-layer {
   margin-top: 15px;
   margin-bottom: 15px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 950px;
 }
 </style>

@@ -59,7 +59,7 @@ export default {
     <LayerCard :title="`层 ${index}`">
       <div style="display:flex; flex-direction: row; align-items: center; justify-content: space-between;">
         <div>
-          <pre style="break-word: break-all; white-space: pre-wrap;">{{css}}</pre>
+          <pre style="white-space: pre-wrap;">{{css}}</pre>
           <ColoredBox :css="css" :width="width" :height="height" :borderwidth="borderwidth" :bordercolor="bordercolor"
             :borderRadius="borderRadius" :background="background" :extraCss="extraCss" :exampleText="exampleText">
           </ColoredBox>
