@@ -18,18 +18,18 @@
       <TripleBox :palette="palette" :css="css"></TripleBox>
       <el-tabs>
         <el-tab-pane label="上">
-          <LayersDisplay :palette="palette" @update:css="css[0] = $event"></LayersDisplay>
+          <LayersDisplay :palette="palette" @update:css="css[0] = $event" inputIndex="1"></LayersDisplay>
         </el-tab-pane>
         <el-tab-pane label="中">
-          <LayersDisplay :palette="palette" @update:css="css[1] = $event"></LayersDisplay>
+          <LayersDisplay :palette="palette" @update:css="css[1] = $event" inputIndex="2"></LayersDisplay>
         </el-tab-pane>
         <el-tab-pane label="下">
-          <LayersDisplay :palette="palette" @update:css="css[2] = $event"></LayersDisplay>
+          <LayersDisplay :palette="palette" @update:css="css[2] = $event" inputIndex="3"></LayersDisplay>
         </el-tab-pane>
       </el-tabs>
     </div>
     <div :style="{ display: triple ? 'none' : 'block' }">
-      <LayersDisplay :palette="palette" @update:css="css[0] = $event"></LayersDisplay>
+      <LayersDisplay :palette="palette" @update:css="css[0] = $event" inputIndex="0"></LayersDisplay>
     </div>
 
     <el-divider></el-divider>

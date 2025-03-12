@@ -14,6 +14,9 @@ export default {
   props: {
     palette: {
       default: () => ref([]),
+    },
+    inputIndex: {
+      default: () => ref(0),
     }
   },
   data() {
@@ -115,7 +118,7 @@ export default {
 <template>
   <!-- A input box -->
   <div>
-    <CssInput v-model="css" @input="onInputUpdated()" :palette="palette"></CssInput>
+    <CssInput v-model="css" @input="onInputUpdated()" :palette="palette" :index="inputIndex"></CssInput>
 
     <el-collapse>
       <el-collapse-item title="更多设置">

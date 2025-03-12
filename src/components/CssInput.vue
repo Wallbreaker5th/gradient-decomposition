@@ -12,6 +12,9 @@ export default {
     modelValue: {},
     palette: {
       default: () => ref([]),
+    },
+    index: {
+      default: () => ref(0),
     }
   },
   data() {
@@ -99,7 +102,7 @@ export default {
       this.code = this.combine(this.modelValue);
     },
     insertCode(c) {
-      let input = document.getElementById('input');
+      let input = document.getElementById('input' + this.index);
       let cursorLeft = input.selectionStart;
       let cursorRight = input.selectionEnd;
       let left = this.code.substring(0, cursorLeft);
@@ -191,7 +194,7 @@ export default {
       <p>在此输入渐变色的 CSS 代码</p>
       <pre>background: </pre>
       <el-input v-model="value" type="textarea" style="font-family: monospace; width: 800px;" :autosize="{ minRows: 3, maxRows: 20 }"
-        id="input"></el-input>
+        :id="'input' + index"></el-input>
       <el-collapse>
         <el-collapse-item title="CheatSheet" style="width: 800px;">
           <CheatSheet @click:insert-code="insertCode"></CheatSheet>
